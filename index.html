@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+    <title>Alpha Slider</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+    <script>
+      $(function() {
+        var alpah;
+        $("#slider").slider({
+                value:10,
+                min: 0,
+                max: 100,
+                step: 1,
+                slide: function( event, ui ) {
+                  alpah = ui.value / 100;
+                    $( "#amount3" ).val(alpah);
+                    $.get( "action/alpha?value=" + alpah, function(jqXHR) {
+                          //alert( "success" );
+                      }, 'json');
+
+
+                }
+        });
+        $( "#amount3" ).val( $( "#slider" ).slider( "value" ) / 100 );
+        var check_Status = false;
+        $("#amount3").attr('style', 'visibility:hidden');
+        $("#slider").attr('style', 'visibility:hidden');
+        var check = $("input[type='checkbox']");
+        check.click(function(){
+          check_Status = !check_Status;
+          if(check_Status){
+            $("#amount3").attr('style', 'visibility:visible');
+            $("#slider").attr('style', 'visibility:visible');
+            $.get( "action/alpha?value=" + alpah, function(jqXHR) {
+                      }, 'json');
+          }
+          else{
+            $("#amount3").attr('style', 'visibility:hidden');
+            $("#slider").attr('style', 'visibility:hidden');
+            $.get( "action/alpha?value=" + 2.0, function(jqXHR) {
+                      }, 'json');
+          }
+          //console.log(check_Status);
+
+        });
+      });
+    </script>
+    <style>
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+      }
+      
+      .switch input { 
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+      
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+      
+      input:checked + .slider {
+        background-color: #2196F3;
+      }
+      
+      input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+      }
+      
+      input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+      }
+      
+      /* Rounded sliders */
+      .slider.round {
+        border-radius: 34px;
+      }
+      
+      .slider.round:before {
+        border-radius: 50%;
+      }
+      </style>
+</head>
+<body>
+  <label class="switch">
+      <input type="checkbox">
+      <span class="slider round"></span>
+  </label>
+  <p>
+    <input type="text" id="amount3" readonly style="border:0; color:#f6931f; font-weight:bold;">
+  </p>
+  <div id="slider"></div>
+</body>
+</html>
